@@ -12,27 +12,26 @@ void _add_to_results(char *expr, int passed);
 #define PASSED 1
 #define FAILED 0
 
-#define START_CTEST \
+#define CTEST_START \
   do { \
     _init_results(); \
   } while (0)
 
-#define END_CTEST \
+#define CTEST_END \
   do { \
     _show_results(); \
   } while (0)
 
 #define _CTEST_STR(x) #x
 
-// func: file:line: MACRO_NAME -> expr
 #define ASSERT_TRUE(expr) \
   do { \
     char *res = (char *)malloc(sizeof(char) * 100); \
     if ((expr)) { \
-      sprintf(res, "%s:%s:%d: %s -> %s", __FILE__, __func__, __LINE__, _CTEST_STR(ASSERT_TRUE(expr)), "PASSED"); \
+      sprintf(res, "%s:%s:%d -> %s ... %s", __FILE__, __func__, __LINE__, _CTEST_STR(ASSERT_TRUE(expr)), "ok"); \
       _add_to_results(res, PASSED); \
     } else { \
-      sprintf(res, "%s:%s:%d: %s -> %s", __FILE__, __func__, __LINE__, _CTEST_STR(ASSERT_TRUE(expr)), "FAILED"); \
+      sprintf(res, "%s:%s:%d -> %s ... %s", __FILE__, __func__, __LINE__, _CTEST_STR(ASSERT_TRUE(expr)), "FAILED"); \
       _add_to_results(res, FAILED); \
     } \
   } while (0)
@@ -41,10 +40,10 @@ void _add_to_results(char *expr, int passed);
   do { \
     char *res = (char *)malloc(sizeof(char) * 100); \
     if (!(expr)) { \
-      sprintf(res, "%s:%s:%d: %s -> %s", __FILE__, __func__, __LINE__, _CTEST_STR(ASSERT_FALSE(expr)), "PASSED"); \
+      sprintf(res, "%s:%s:%d -> %s ... %s", __FILE__, __func__, __LINE__, _CTEST_STR(ASSERT_FALSE(expr)), "ok"); \
       _add_to_results(res, PASSED); \
     } else { \
-      sprintf(res, "%s:%s:%d: %s -> %s", __FILE__, __func__, __LINE__, _CTEST_STR(ASSERT_FALSE(expr)), "FAILED"); \
+      sprintf(res, "%s:%s:%d -> %s ... %s", __FILE__, __func__, __LINE__, _CTEST_STR(ASSERT_FALSE(expr)), "FAILED"); \
       _add_to_results(res, FAILED); \
     } \
   } while (0)
@@ -53,10 +52,10 @@ void _add_to_results(char *expr, int passed);
   do { \
     char *res = (char *)malloc(sizeof(char) * 100); \
     if ((expr1) == (expr2)) { \
-      sprintf(res, "%s:%s:%d: %s -> %s", __FILE__, __func__, __LINE__, _CTEST_STR(ASSERT_EQ(expr1, expr2)), "PASSED"); \
+      sprintf(res, "%s:%s:%d -> %s ... %s", __FILE__, __func__, __LINE__, _CTEST_STR(ASSERT_EQ(expr1, expr2)), "ok"); \
       _add_to_results(res, PASSED); \
     } else { \
-      sprintf(res, "%s:%s:%d: %s -> %s", __FILE__, __func__, __LINE__, _CTEST_STR(ASSERT_EQ(expr1, expr2)), "FAILED"); \
+      sprintf(res, "%s:%s:%d -> %s ... %s", __FILE__, __func__, __LINE__, _CTEST_STR(ASSERT_EQ(expr1, expr2)), "FAILED"); \
       _add_to_results(res, FAILED); \
     } \
   } while (0)
@@ -65,10 +64,34 @@ void _add_to_results(char *expr, int passed);
   do { \
     char *res = (char *)malloc(sizeof(char) * 100); \
     if ((expr1) != (expr2)) { \
-      sprintf(res, "%s:%s:%d: %s -> %s", __FILE__, __func__, __LINE__, _CTEST_STR(ASSERT_NEQ(expr1, expr2)), "PASSED"); \
+      sprintf(res, "%s:%s:%d -> %s ... %s", __FILE__, __func__, __LINE__, _CTEST_STR(ASSERT_NEQ(expr1, expr2)), "ok"); \
       _add_to_results(res, PASSED); \
     } else { \
-      sprintf(res, "%s:%s:%d: %s -> %s", __FILE__, __func__, __LINE__, _CTEST_STR(ASSERT_NEQ(expr1, expr2)), "FAILED"); \
+      sprintf(res, "%s:%s:%d -> %s ... %s", __FILE__, __func__, __LINE__, _CTEST_STR(ASSERT_NEQ(expr1, expr2)), "FAILED"); \
+      _add_to_results(res, FAILED); \
+    } \
+  } while (0)
+
+#define ASSERT_STR_EQ(expr1, expr2) \
+  do { \
+    char *res = (char *)malloc(sizeof(char) * 100); \
+    if (strcmp((expr1), (expr2)) == 0) { \
+      sprintf(res, "%s:%s:%d -> %s ... %s", __FILE__, __func__, __LINE__, _CTEST_STR(ASSERT_STR_EQ(expr1, expr2)), "ok"); \
+      _add_to_results(res, PASSED); \
+    } else { \
+      sprintf(res, "%s:%s:%d -> %s ... %s", __FILE__, __func__, __LINE__, _CTEST_STR(ASSERT_STR_EQ(expr1, expr2)), "FAILED"); \
+      _add_to_results(res, FAILED); \
+    } \
+  } while (0)
+
+#define ASSERT_STR_NEQ(expr1, expr2) \
+  do { \
+    char *res = (char *)malloc(sizeof(char) * 100); \
+    if (strcmp((expr1), (expr2)) != 0) { \
+      sprintf(res, "%s:%s:%d -> %s ... %s", __FILE__, __func__, __LINE__, _CTEST_STR(ASSERT_STR_NEQ(expr1, expr2)), "ok"); \
+      _add_to_results(res, PASSED); \
+    } else { \
+      sprintf(res, "%s:%s:%d -> %s ... %s", __FILE__, __func__, __LINE__, _CTEST_STR(ASSERT_STR_NEQ(expr1, expr2)), "FAILED"); \
       _add_to_results(res, FAILED); \
     } \
   } while (0)

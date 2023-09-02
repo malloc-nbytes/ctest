@@ -18,11 +18,14 @@ int func4() {
 }
 
 int main(void) {
-  START_CTEST;
+  CTEST_START;
+
+  ASSERT_STR_EQ("hello", "hello");
+  ASSERT_STR_NEQ("hello", "test");
 
   ASSERT_TRUE(func1() == func2());
   ASSERT_TRUE(func3() == func4());
   ASSERT_EQ(func1(), func2());
 
-  END_CTEST;
+  CTEST_END;
 }
