@@ -23,7 +23,7 @@
 
 #define _PRE_EXPR __FILE__, __func__, __LINE__
 
-#define CTEST_ASSERT_TRUE(expr)                                               \
+#define CTEST_ASSERT_TRUE(expr)                                         \
   do {                                                                  \
     char *res = (char *)malloc(sizeof(char) * 100);                     \
     if ((expr)) {                                                       \
@@ -35,7 +35,7 @@
     }                                                                   \
   } while (0)
 
-#define CTEST_ASSERT_FALSE(expr)                                              \
+#define CTEST_ASSERT_FALSE(expr)                                        \
   do {                                                                  \
     char *res = (char *)malloc(sizeof(char) * 100);                     \
     if (!(expr)) {                                                      \
@@ -47,7 +47,7 @@
     }                                                                   \
   } while (0)
 
-#define CTEST_ASSERT_EQ(expr1, expr2)                                         \
+#define CTEST_ASSERT_EQ(expr1, expr2)                                   \
   do {                                                                  \
     char *res = (char *)malloc(sizeof(char) * 100);                     \
     if ((expr1) == (expr2)) {                                           \
@@ -59,7 +59,7 @@
     }                                                                   \
   } while (0)
 
-#define CTEST_ASSERT_NEQ(expr1, expr2)                                        \
+#define CTEST_ASSERT_NEQ(expr1, expr2)                                  \
   do {                                                                  \
     char *res = (char *)malloc(sizeof(char) * 100);                     \
     if ((expr1) != (expr2)) {                                           \
@@ -71,7 +71,7 @@
     }                                                                   \
   } while (0)
 
-#define CTEST_ASSERT_STR_EQ(expr1, expr2)                                     \
+#define CTEST_ASSERT_STR_EQ(expr1, expr2)                               \
   do {                                                                  \
     char *res = (char *)malloc(sizeof(char) * 100);                     \
     if (strcmp((expr1), (expr2)) == 0) {                                \
@@ -83,7 +83,7 @@
     }                                                                   \
   } while (0)
 
-#define CTEST_ASSERT_STR_NEQ(expr1, expr2)                                    \
+#define CTEST_ASSERT_STR_NEQ(expr1, expr2)                              \
   do {                                                                  \
     char *res = (char *)malloc(sizeof(char) * 100);                     \
     if (strcmp((expr1), (expr2)) != 0) {                                \
