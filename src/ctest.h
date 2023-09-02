@@ -71,8 +71,6 @@
     }                                                                   \
   } while (0)
 
-#endif // CTEST_H
-
 #ifdef CTEST_IMPL
 
 typedef struct {
@@ -129,3 +127,4 @@ void _add_to_results(char *expr, int passed) {
 }
 
 #endif // CTEST_IMPL
+#endif // CTEST_H
