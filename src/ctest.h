@@ -134,10 +134,6 @@ void _show_results() {
   for (size_t i = 0; i < _result.len; i++) {
     free(_result.exprs[i]);
   }
-
-  if (_result.failed > 0) {
-    abort();
-  }
 }
 
 void _add_to_results(char *expr, int passed) {
@@ -151,6 +147,7 @@ void _add_to_results(char *expr, int passed) {
     _result.failed++;
 #ifdef CTEST_ABORT_ON_FAIL
     _show_results();
+    abort();
 #endif // CTEST_ABORT_ON_FAIL
   }
 }
