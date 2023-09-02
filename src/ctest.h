@@ -54,7 +54,7 @@
       sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CTEST_ASSERT_EQ(expr1, expr2)), "ok"); \
       _add_to_results(res, PASSED);                                     \
     } else {                                                            \
-      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CTEST_ASSERT_EQ(expr1, expr2)), "FAILED"); \
+      sprintf(res, "%s:%s:%d -> %s ... %s\n  lhs = %d\n  rhs = %d", _PRE_EXPR, _TO_STR(CTEST_ASSERT_EQ(expr1, expr2)), "FAILED", expr1, expr2); \
       _add_to_results(res, FAILED);                                     \
     }                                                                   \
   } while (0)
@@ -66,31 +66,7 @@
       sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CTEST_ASSERT_NEQ(expr1, expr2)), "ok"); \
       _add_to_results(res, PASSED);                                     \
     } else {                                                            \
-      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CTEST_ASSERT_NEQ(expr1, expr2)), "FAILED"); \
-      _add_to_results(res, FAILED);                                     \
-    }                                                                   \
-  } while (0)
-
-#define CTEST_ASSERT_STR_EQ(expr1, expr2)                               \
-  do {                                                                  \
-    char *res = (char *)malloc(sizeof(char) * 100);                     \
-    if (strcmp((expr1), (expr2)) == 0) {                                \
-      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CTEST_ASSERT_STR_EQ(expr1, expr2)), "ok"); \
-      _add_to_results(res, PASSED);                                     \
-    } else {                                                            \
-      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CTEST_ASSERT_STR_EQ(expr1, expr2)), "FAILED"); \
-      _add_to_results(res, FAILED);                                     \
-    }                                                                   \
-  } while (0)
-
-#define CTEST_ASSERT_STR_NEQ(expr1, expr2)                              \
-  do {                                                                  \
-    char *res = (char *)malloc(sizeof(char) * 100);                     \
-    if (strcmp((expr1), (expr2)) != 0) {                                \
-      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CTEST_ASSERT_STR_NEQ(expr1, expr2)), "ok"); \
-      _add_to_results(res, PASSED);                                     \
-    } else {                                                            \
-      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CTEST_ASSERT_STR_NEQ(expr1, expr2)), "FAILED"); \
+      sprintf(res, "%s:%s:%d -> %s ... %s\n  lhs = %d\n  rhs = %d", _PRE_EXPR, _TO_STR(CTEST_ASSERT_NEQ(expr1, expr2)), "FAILED", expr1, expr2); \
       _add_to_results(res, FAILED);                                     \
     }                                                                   \
   } while (0)

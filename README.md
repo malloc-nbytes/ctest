@@ -15,13 +15,9 @@ A small testing library for testing C/C++ code.
 
 `CTEST_ASSERT_FALSE(expr)` - asserts that the expression is false
 
-`CTEST_ASSERT_EQ(expr, expr)` - asserts that the two expressions are equal
+`CTEST_ASSERT_EQ(expr, expr)` - asserts that the two expressions are equal - shows lhs and rhs if not equal
 
-`CTEST_ASSERT_NEQ(expr, expr)` - asserts that the two expressions are not equal
-
-`CTEST_ASSERT_STR_EQ(expr, expr)` - asserts that the two expressions are equal strings
-
-`CTEST_ASSERT_STR_NEQ(expr, expr)` - asserts that the two expressions are not equal strings
+`CTEST_ASSERT_NEQ(expr, expr)` - asserts that the two expressions are not equal - shows lhs and rhs if equal
 
 # Examples
 
@@ -53,9 +49,6 @@ int main(void) {
   CTEST_ASSERT_EQ(func1(1), func2());
   CTEST_ASSERT_NEQ(func1(0), func2());
 
-  CTEST_ASSERT_STR_EQ("hello", "hello");
-  CTEST_ASSERT_STR_NEQ("hello", "test");
-
   CTEST_END;
 }
 ```
@@ -70,11 +63,9 @@ main.c:main:21 -> CTEST_ASSERT_FALSE(func1(0) == func2()) ... ok
 main.c:main:22 -> CTEST_ASSERT_TRUE(func1(1) == func2()) ... ok
 main.c:main:23 -> CTEST_ASSERT_EQ(func1(1), func2()) ... ok
 main.c:main:24 -> CTEST_ASSERT_NEQ(func1(0), func2()) ... ok
-main.c:main:26 -> CTEST_ASSERT_STR_EQ("hello", "hello") ... ok
-main.c:main:27 -> CTEST_ASSERT_STR_NEQ("hello", "test") ... ok
-Passed: 8
+Passed: 6
 Failed: 0
-Total: 8
+Total: 6
 ===================================
 ```
 
@@ -103,11 +94,8 @@ int main(void) {
 
   CTEST_ASSERT_FALSE(func1(0) != func2());
   CTEST_ASSERT_TRUE(func1(1) == func2());
-  CTEST_ASSERT_EQ(func1(1), func2());
+  CTEST_ASSERT_EQ(func1(99), func2());
   CTEST_ASSERT_NEQ(func1(0), func2());
-
-  CTEST_ASSERT_STR_EQ("helo", "hello");
-  CTEST_ASSERT_STR_NEQ("hello", "test");
 
   CTEST_END;
 }
@@ -121,15 +109,14 @@ main.c:main:18 -> CTEST_ASSERT_TRUE(x != 1) ... FAILED
 main.c:main:19 -> CTEST_ASSERT_FALSE(x == 2) ... ok
 main.c:main:21 -> CTEST_ASSERT_FALSE(func1(0) != func2()) ... FAILED
 main.c:main:22 -> CTEST_ASSERT_TRUE(func1(1) == func2()) ... ok
-main.c:main:23 -> CTEST_ASSERT_EQ(func1(1), func2()) ... ok
+main.c:main:23 -> CTEST_ASSERT_EQ(func1(99), func2()) ... FAILED
+  lhs = 100
+  rhs = 2
 main.c:main:24 -> CTEST_ASSERT_NEQ(func1(0), func2()) ... ok
-main.c:main:26 -> CTEST_ASSERT_STR_EQ("helo", "hello") ... FAILED
-main.c:main:27 -> CTEST_ASSERT_STR_NEQ("hello", "test") ... ok
-Passed: 5
+Passed: 3
 Failed: 3
-Total: 8
+Total: 6
 ===================================
-Aborted (core dumped)
 ```
 
 ### With `CTEST_ABORT_ON_FAIL` defined
@@ -138,7 +125,7 @@ Aborted (core dumped)
 
 ```
 ========== CTest Results ==========
-main.c:main:19 -> CTEST_ASSERT_TRUE(x != 1) ... FAILED
+main.c:main:18 -> CTEST_ASSERT_TRUE(x != 1) ... FAILED
 Passed: 0
 Failed: 1
 Total: 1
