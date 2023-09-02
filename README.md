@@ -4,10 +4,10 @@ A small testing library for testing C/C++ code.
 
 # Usage
 1. put `#define CTEST_IMPL` at the top of the file that is being tested in
-2. `#include "./ctest.h"` right beneath it
-3. put `CTEST_START` at the beginning of the main function
-4. put `CTEST_END` at the end of the main function
-5. *optional* `#define CTEST_ABORT_ON_FAIL` to immediately abort tests on a failure
+2. *optional* `#define CTEST_ABORT_ON_FAIL` to immediately abort tests on a failure
+3. `#include "./ctest.h"` right beneath it
+4. put `CTEST_BEGIN` at the beginning of the main function
+5. put `CTEST_END` at the end of the main function
 
 # Functionality
 
@@ -41,7 +41,7 @@ int func2() {
 }
 
 int main(void) {
-  CTEST_START;
+  CTEST_BEGIN;
 
   int x = 1;
   
@@ -94,7 +94,7 @@ int func2() {
 }
 
 int main(void) {
-  CTEST_START;
+  CTEST_BEGIN;
 
   int x = 1;
   

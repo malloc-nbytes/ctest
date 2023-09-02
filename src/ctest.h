@@ -9,7 +9,7 @@
 #define PASSED 1
 #define FAILED 0
 
-#define CTEST_START                             \
+#define CTEST_BEGIN                             \
   do {                                          \
     _init_results();                            \
   } while (0)
