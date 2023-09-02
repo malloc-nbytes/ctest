@@ -1,6 +1,6 @@
-# ctests
+# ctest
 
-CTests is a small testing library for testing C/C++ code.
+A small testing library for testing C/C++ code.
 
 # Usage
 1. put `#define CTEST_IMPL` at the top of the file that is being tested in
