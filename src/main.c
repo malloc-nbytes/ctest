@@ -1,31 +1,30 @@
 #define CTEST_IMPL
-#include "./include/ctest.h"
+#define CTEST_ABORT_ON_FAIL
+#include "./ctest.h"
 
-int func1() {
-  return 1;
+int func1(int x) {
+  return x + 1;
 }
 
 int func2() {
-  return 1;
-}
-
-int func3() {
-  return 1;
-}
-
-int func4() {
-  return 1;
+  return 2;
 }
 
 int main(void) {
   CTEST_START;
 
-  ASSERT_STR_EQ("hello", "hello");
-  ASSERT_STR_NEQ("hello", "test");
+  int x = 1;
+  
+  CTEST_ASSERT_TRUE(x != 1);
+  CTEST_ASSERT_FALSE(x == 2);
 
-  ASSERT_TRUE(func1() == func2());
-  ASSERT_TRUE(func3() == func4());
-  ASSERT_EQ(func1(), func2());
+  CTEST_ASSERT_FALSE(func1(0) != func2());
+  CTEST_ASSERT_TRUE(func1(1) == func2());
+  CTEST_ASSERT_EQ(func1(1), func2());
+  CTEST_ASSERT_NEQ(func1(0), func2());
+
+  CTEST_ASSERT_STR_EQ("helo", "hello");
+  CTEST_ASSERT_STR_NEQ("hello", "test");
 
   CTEST_END;
 }

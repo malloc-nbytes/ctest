@@ -1,6 +1,10 @@
 # Prerequisites
 *.d
 
+main
+main.c
+build.sh
+
 # Object files
 *.o
 *.ko
