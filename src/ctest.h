@@ -4,7 +4,7 @@
 #include <aio.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <time.h>
 
 #define PASSED 1
 #define FAILED 0
@@ -78,6 +78,8 @@ typedef struct {
   size_t len, cap;
   size_t failed;
   size_t passed;
+  clock_t start_time, end_time;
+  double elapsed_time;
 } CTest;
 
 static CTest _result = {0};
@@ -88,14 +90,21 @@ void _init_results() {
   _result.cap = 10;
   _result.failed = 0;
   _result.passed = 0;
+  _result.end_time;
+  _result.elapsed_time;
+  _result.start_time = clock();
 }
 
 void _realloc_exprs() {
+  clock_t pause = clock();
   _result.exprs = (char **)realloc(_result.exprs, sizeof(char *) * _result.cap * 2);
   _result.cap *= 2;
+  _result.start_time -= pause;
 }
 
 void _show_results() {
+  _result.end_time = clock();
+  _result.elapsed_time = (double)(_result.end_time - _result.start_time) / CLOCKS_PER_SEC;
   printf("========== CTest Results ==========\n");
   for (size_t i = 0; i < _result.len; i++) {
     printf("%s\n", _result.exprs[i]);
@@ -103,6 +112,7 @@ void _show_results() {
   printf("Passed: %zu\n", _result.passed);
   printf("Failed: %zu\n", _result.failed);
   printf("Total: %zu\n", _result.len);
+  printf("Time: %f\n", _result.elapsed_time);
   printf("===================================\n");
 
   for (size_t i = 0; i < _result.len; i++) {
