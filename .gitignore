@@ -4,6 +4,7 @@
 main
 main.c
 build.sh
+.vscode
 
 # Object files
 *.o

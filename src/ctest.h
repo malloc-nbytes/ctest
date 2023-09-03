@@ -9,11 +9,13 @@
 #define PASSED 1
 #define FAILED 0
 
+// Put this in the entry point of the file to be tested.
 #define CTEST_BEGIN                             \
   do {                                          \
     _init_results();                            \
   } while (0)
 
+// Put this in the exit point of the file to be tested.
 #define CTEST_END                               \
   do {                                          \
     _show_results();                            \
@@ -23,6 +25,11 @@
 
 #define _PRE_EXPR __FILE__, __func__, __LINE__
 
+// =============== //
+//   Assertions    //
+// =============== //
+
+// Asserts that the expression is true.
 #define CTEST_ASSERT_TRUE(expr)                                         \
   do {                                                                  \
     char *res = (char *)malloc(sizeof(char) * 100);                     \
@@ -35,6 +42,7 @@
     }                                                                   \
   } while (0)
 
+// Asserts that the expression is false.
 #define CTEST_ASSERT_FALSE(expr)                                        \
   do {                                                                  \
     char *res = (char *)malloc(sizeof(char) * 100);                     \
@@ -47,6 +55,8 @@
     }                                                                   \
   } while (0)
 
+// Asserts that the two expressions are equal.
+// Displays the values of the expressions if they are not equal.
 #define CTEST_ASSERT_EQ(expr1, expr2)                                   \
   do {                                                                  \
     char *res = (char *)malloc(sizeof(char) * 100);                     \
@@ -59,6 +69,8 @@
     }                                                                   \
   } while (0)
 
+// Asserts that the two expressions are not equal.
+// Displays the values of the expressions if they are equal.
 #define CTEST_ASSERT_NEQ(expr1, expr2)                                  \
   do {                                                                  \
     char *res = (char *)malloc(sizeof(char) * 100);                     \
@@ -71,7 +83,23 @@
     }                                                                   \
   } while (0)
 
+int ctest_randint(int min, int max);
+
+float ctest_randfloat_clamped();
+
 #ifdef CTEST_IMPL
+
+// =============== //
+// Implementation  //
+// =============== //
+
+int ctest_randint(int min, int max) {
+  return rand() % (max - min + 1) + min;
+}
+
+float ctest_randfloat_clamped() {
+  return (float)rand() / (float)(RAND_MAX);
+}
 
 typedef struct {
   char **exprs;
@@ -93,6 +121,7 @@ void _init_results() {
   _result.end_time;
   _result.elapsed_time;
   _result.start_time = clock();
+  srand(time(NULL));
 }
 
 void _realloc_exprs() {
