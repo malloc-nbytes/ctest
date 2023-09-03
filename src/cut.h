@@ -1,5 +1,5 @@
-#ifndef CTEST_H
-#define CTEST_H
+#ifndef CUT_H
+#define CUT_H
 
 #include <aio.h>
 #include <stdio.h>
@@ -11,13 +11,13 @@
 #define FAILED 0
 
 // Put this in the entry point of the file to be tested.
-#define CTEST_BEGIN                             \
+#define CUT_BEGIN                             \
   do {                                          \
     _init_results();                            \
   } while (0)
 
 // Put this in the exit point of the file to be tested.
-#define CTEST_END                               \
+#define CUT_END                               \
   do {                                          \
     printf("Summary\n");                        \
     _show_results();                            \
@@ -33,64 +33,64 @@
 // =============== //
 
 // Asserts that the expression is true.
-#define CTEST_ASSERT_TRUE(expr)                                         \
+#define CUT_ASSERT_TRUE(expr)                                         \
   do {                                                                  \
     char *res = (char *)malloc(sizeof(char) * 100);                     \
     if ((expr)) {                                                       \
-      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CTEST_ASSERT_TRUE(expr)), "ok"); \
+      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CUT_ASSERT_TRUE(expr)), "ok"); \
       _add_to_results(res, PASSED);                                     \
     } else {                                                            \
-      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CTEST_ASSERT_TRUE(expr)), "FAILED"); \
+      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CUT_ASSERT_TRUE(expr)), "FAILED"); \
       _add_to_results(res, FAILED);                                     \
     }                                                                   \
   } while (0)
 
 // Asserts that the expression is false.
-#define CTEST_ASSERT_FALSE(expr)                                        \
+#define CUT_ASSERT_FALSE(expr)                                        \
   do {                                                                  \
     char *res = (char *)malloc(sizeof(char) * 100);                     \
     if (!(expr)) {                                                      \
-      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CTEST_ASSERT_FALSE(expr)), "ok"); \
+      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CUT_ASSERT_FALSE(expr)), "ok"); \
       _add_to_results(res, PASSED);                                     \
     } else {                                                            \
-      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CTEST_ASSERT_FALSE(expr)), "FAILED"); \
+      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CUT_ASSERT_FALSE(expr)), "FAILED"); \
       _add_to_results(res, FAILED);                                     \
     }                                                                   \
   } while (0)
 
 // Asserts that the two expressions are equal.
 // Displays the values of the expressions if they are not equal.
-#define CTEST_ASSERT_EQ(expr1, expr2)                                   \
+#define CUT_ASSERT_EQ(expr1, expr2)                                   \
   do {                                                                  \
     char *res = (char *)malloc(sizeof(char) * 100);                     \
     if ((expr1) == (expr2)) {                                           \
-      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CTEST_ASSERT_EQ(expr1, expr2)), "ok"); \
+      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CUT_ASSERT_EQ(expr1, expr2)), "ok"); \
       _add_to_results(res, PASSED);                                     \
     } else {                                                            \
-      sprintf(res, "%s:%s:%d -> %s ... %s\n  lhs = %d\n  rhs = %d", _PRE_EXPR, _TO_STR(CTEST_ASSERT_EQ(expr1, expr2)), "FAILED", expr1, expr2); \
+      sprintf(res, "%s:%s:%d -> %s ... %s\n  lhs = %d\n  rhs = %d", _PRE_EXPR, _TO_STR(CUT_ASSERT_EQ(expr1, expr2)), "FAILED", expr1, expr2); \
       _add_to_results(res, FAILED);                                     \
     }                                                                   \
   } while (0)
 
 // Asserts that the two expressions are not equal.
 // Displays the values of the expressions if they are equal.
-#define CTEST_ASSERT_NEQ(expr1, expr2)                                  \
+#define CUT_ASSERT_NEQ(expr1, expr2)                                  \
   do {                                                                  \
     char *res = (char *)malloc(sizeof(char) * 100);                     \
     if ((expr1) != (expr2)) {                                           \
-      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CTEST_ASSERT_NEQ(expr1, expr2)), "ok"); \
+      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CUT_ASSERT_NEQ(expr1, expr2)), "ok"); \
       _add_to_results(res, PASSED);                                     \
     } else {                                                            \
-      sprintf(res, "%s:%s:%d -> %s ... %s\n  lhs = %d\n  rhs = %d", _PRE_EXPR, _TO_STR(CTEST_ASSERT_NEQ(expr1, expr2)), "FAILED", expr1, expr2); \
+      sprintf(res, "%s:%s:%d -> %s ... %s\n  lhs = %d\n  rhs = %d", _PRE_EXPR, _TO_STR(CUT_ASSERT_NEQ(expr1, expr2)), "FAILED", expr1, expr2); \
       _add_to_results(res, FAILED);                                     \
     }                                                                   \
   } while (0)
 
 // Generates a random integer between min and max.
-int ctest_randint(int min, int max);
+int cut_randint(int min, int max);
 
 // Generates a random float between 0 and 1.
-float ctest_randfloat_clamped();
+float cut_randfloat_clamped();
 
 typedef struct {
   void (*func)(void);
@@ -103,11 +103,11 @@ typedef struct {
   size_t len, cap;
 } TaggedFuncsArray;
 
-void ctest_tagged_funcs_run(char *tags);
+void cut_tagged_funcs_run(char *tags);
 
-void ctest_tagged_func_create(void (*func)(void), char *name, char *tags);
+void cut_tagged_func_create(void (*func)(void), char *name, char *tags);
 
-#ifdef CTEST_IMPL
+#ifdef CUT_IMPL
 
 // =============== //
 // Implementation  //
@@ -120,13 +120,13 @@ typedef struct {
   size_t passed;
   clock_t start_time, end_time;
   double elapsed_time;
-} CTest;
+} Cut;
 
-static CTest _result = {0};
+static Cut _result = {0};
 
 static TaggedFuncsArray _tagged_funcs = {0};
 
-void ctest_tagged_func_create(void (*func)(void), char *name, char *tag) {
+void cut_tagged_func_create(void (*func)(void), char *name, char *tag) {
   if (_tagged_funcs.len == _tagged_funcs.cap) {
     _tagged_funcs.funcs = (TaggedFunc *)realloc(_tagged_funcs.funcs, sizeof(TaggedFunc) * _tagged_funcs.cap * 2);
     _tagged_funcs.cap *= 2;
@@ -151,7 +151,7 @@ void _show_results() {
   printf("===================================\n");
 }
 
-void ctest_tagged_funcs_run(char *tag) {
+void cut_tagged_funcs_run(char *tag) {
   for (size_t i = 0; i < _tagged_funcs.len; i++) {
     if (strcmp(_tagged_funcs.funcs[i].tag, tag) == 0) {
       printf("Running %s [%s]\n", _tagged_funcs.funcs[i].name, _tagged_funcs.funcs[i].tag);
@@ -160,11 +160,11 @@ void ctest_tagged_funcs_run(char *tag) {
   }
 }
 
-int ctest_randint(int min, int max) {
+int cut_randint(int min, int max) {
   return rand() % (max - min + 1) + min;
 }
 
-float ctest_randfloat_clamped() {
+float cut_randfloat_clamped() {
   return (float)rand() / (float)(RAND_MAX);
 }
 
@@ -207,12 +207,12 @@ void _add_to_results(char *expr, int passed) {
     _result.passed++;
   } else {
     _result.failed++;
-#ifdef CTEST_ABORT_ON_FAIL
+#ifdef CUT_ABORT_ON_FAIL
     _show_results();
     abort();
-#endif // CTEST_ABORT_ON_FAIL
+#endif // CUT_ABORT_ON_FAIL
   }
 }
 
-#endif // CTEST_IMPL
-#endif // CTEST_H
+#endif // CUT_IMPL
+#endif // CUT_H
