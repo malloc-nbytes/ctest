@@ -11,13 +11,13 @@
 #define FAILED 0
 
 // Put this in the entry point of the file to be tested.
-#define CUT_BEGIN                             \
+#define CUT_BEGIN                               \
   do {                                          \
     _init_results();                            \
   } while (0)
 
 // Put this in the exit point of the file to be tested.
-#define CUT_END                               \
+#define CUT_END                                 \
   do {                                          \
     printf("Summary\n");                        \
     _show_results();                            \
@@ -33,7 +33,7 @@
 // =============== //
 
 // Asserts that the expression is true.
-#define CUT_ASSERT_TRUE(expr)                                         \
+#define CUT_ASSERT_TRUE(expr)                                           \
   do {                                                                  \
     char *res = (char *)malloc(sizeof(char) * 100);                     \
     if ((expr)) {                                                       \
@@ -46,7 +46,7 @@
   } while (0)
 
 // Asserts that the expression is false.
-#define CUT_ASSERT_FALSE(expr)                                        \
+#define CUT_ASSERT_FALSE(expr)                                          \
   do {                                                                  \
     char *res = (char *)malloc(sizeof(char) * 100);                     \
     if (!(expr)) {                                                      \
@@ -60,7 +60,7 @@
 
 // Asserts that the two expressions are equal.
 // Displays the values of the expressions if they are not equal.
-#define CUT_ASSERT_EQ(expr1, expr2)                                   \
+#define CUT_ASSERT_EQ(expr1, expr2)                                     \
   do {                                                                  \
     char *res = (char *)malloc(sizeof(char) * 100);                     \
     if ((expr1) == (expr2)) {                                           \
@@ -74,7 +74,7 @@
 
 // Asserts that the two expressions are not equal.
 // Displays the values of the expressions if they are equal.
-#define CUT_ASSERT_NEQ(expr1, expr2)                                  \
+#define CUT_ASSERT_NEQ(expr1, expr2)                                    \
   do {                                                                  \
     char *res = (char *)malloc(sizeof(char) * 100);                     \
     if ((expr1) != (expr2)) {                                           \
