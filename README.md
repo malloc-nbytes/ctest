@@ -19,7 +19,7 @@ A small testing library for testing C/C++ code.
 
 `CTEST_ASSERT_NEQ(expr, expr)` - asserts that the two expressions are not equal - shows lhs and rhs if equal
 
-`void ctest_tagged_func_create(void (*func)(void), char *name, char *tags);` - creates a tagged function that can be run with `ctest_tagged_funcs_run(char *tag)`
+`void ctest_tagged_func_create(void (*func)(void), char *name, char *tags);` - creates a tagged function
 
 `void ctest_tagged_funcs_run(char *tag);` - runs all tagged functions with the given tag
 
@@ -60,7 +60,8 @@ int main(void) {
 *Output*
 
 ```
-========== CTest Results ==========
+Summary
+===================================
 main.c:main:18 -> CTEST_ASSERT_TRUE(x == 1) ... ok
 main.c:main:19 -> CTEST_ASSERT_FALSE(x == 2) ... ok
 main.c:main:21 -> CTEST_ASSERT_FALSE(func1(0) == func2()) ... ok
@@ -108,7 +109,8 @@ int main(void) {
 *Output*
 
 ```
-========== CTest Results ==========
+Summary
+===================================
 main.c:main:18 -> CTEST_ASSERT_TRUE(x != 1) ... FAILED
 main.c:main:19 -> CTEST_ASSERT_FALSE(x == 2) ... ok
 main.c:main:21 -> CTEST_ASSERT_FALSE(func1(0) != func2()) ... FAILED
@@ -128,7 +130,8 @@ Total: 6
 *Output*
 
 ```
-========== CTest Results ==========
+Summary
+===================================
 main.c:main:18 -> CTEST_ASSERT_TRUE(x != 1) ... FAILED
 Passed: 0
 Failed: 1
@@ -144,8 +147,13 @@ You can tag functions with `ctest_tagged_func_create(void (*func)(void), char *n
 #define CTEST_IMPL
 #include "ctest.h"
 
+void helper() {
+  CTEST_ASSERT_TRUE(1 == 2);
+}
+
 void test1(void) {
   CTEST_ASSERT_TRUE(1 == 1);
+  helper();
 }
 
 void test2(void) {
@@ -172,35 +180,17 @@ int main(void) {
 
 ```
 Running test 1 [important]
-===================================
-main.c:test1:5 -> CTEST_ASSERT_TRUE(1 == 1) ... ok
-Passed: 1
-Failed: 0
-Total: 1
-Time: 0.000038
-===================================
-
 Running test 2 [important]
-===================================
-main.c:test1:5 -> CTEST_ASSERT_TRUE(1 == 1) ... ok
-main.c:test2:9 -> CTEST_ASSERT_EQ(1, 2) ... FAILED
-  lhs = 1
-  rhs = 2
-Passed: 1
-Failed: 1
-Total: 2
-Time: 0.000053
-===================================
-
 Summary
 ===================================
-main.c:test1:5 -> CTEST_ASSERT_TRUE(1 == 1) ... ok
-main.c:test2:9 -> CTEST_ASSERT_EQ(1, 2) ... FAILED
+main.c:test1:9 -> CTEST_ASSERT_TRUE(1 == 1) ... ok
+main.c:helper:5 -> CTEST_ASSERT_TRUE(1 == 2) ... FAILED
+main.c:test2:14 -> CTEST_ASSERT_EQ(1, 2) ... FAILED
   lhs = 1
   rhs = 2
 Passed: 1
-Failed: 1
-Total: 2
-Time: 0.000060
+Failed: 2
+Total: 3
+Time: 0.000063
 ===================================
 ```

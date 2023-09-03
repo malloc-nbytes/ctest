@@ -156,8 +156,6 @@ void ctest_tagged_funcs_run(char *tag) {
     if (strcmp(_tagged_funcs.funcs[i].tag, tag) == 0) {
       printf("Running %s [%s]\n", _tagged_funcs.funcs[i].name, _tagged_funcs.funcs[i].tag);
       _tagged_funcs.funcs[i].func();
-      _show_results();
-      putchar('\n');
     }
   }
 }
