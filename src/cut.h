@@ -45,6 +45,31 @@
     }                                                                   \
   } while (0)
 
+// Asserts that the expression is true.
+#define CUT_ASSERT_NOT_NULL(expr)                                       \
+  do {                                                                  \
+    char *res = (char *)malloc(sizeof(char) * 100);                     \
+    if ((expr) != NULL) {                                               \
+      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CUT_ASSERT_NOT_NULL(expr)), "ok"); \
+      _add_to_results(res, PASSED);                                     \
+    } else {                                                            \
+      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CUT_ASSERT_NOT_NULL(expr)), "FAILED"); \
+      _add_to_results(res, FAILED);                                     \
+    }                                                                   \
+  } while (0)
+
+// Asserts that the expression is true.
+#define CUT_ASSERT_NULL(expr)                                       \
+  do {                                                                  \
+    char *res = (char *)malloc(sizeof(char) * 100);                     \
+    if ((expr) == NULL) {                                               \
+      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CUT_ASSERT_NULL(expr)), "ok"); \
+      _add_to_results(res, PASSED);                                     \
+    } else {                                                            \
+      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CUT_ASSERT_NULL(expr)), "FAILED"); \
+      _add_to_results(res, FAILED);                                     \
+    }                                                                   \
+  } while (0)
 // Asserts that the expression is false.
 #define CUT_ASSERT_FALSE(expr)                                          \
   do {                                                                  \
@@ -67,7 +92,7 @@
       sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CUT_ASSERT_EQ(expr1, expr2)), "ok"); \
       _add_to_results(res, PASSED);                                     \
     } else {                                                            \
-      sprintf(res, "%s:%s:%d -> %s ... %s\n  lhs = %d\n  rhs = %d", _PRE_EXPR, _TO_STR(CUT_ASSERT_EQ(expr1, expr2)), "FAILED", expr1, expr2); \
+      sprintf(res, "%s:%s:%d -> %s ... %s\n  lhs = %lld\n  rhs = %lld", _PRE_EXPR, _TO_STR(CUT_ASSERT_EQ(expr1, expr2)), "FAILED", (long long)expr1, (long long)expr2); \
       _add_to_results(res, FAILED);                                     \
     }                                                                   \
   } while (0)
