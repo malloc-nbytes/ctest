@@ -4,6 +4,7 @@
 #include <aio.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
 #define PASSED 1
@@ -83,15 +84,53 @@
     }                                                                   \
   } while (0)
 
+// Generates a random integer between min and max.
 int ctest_randint(int min, int max);
 
+// Generates a random float between 0 and 1.
 float ctest_randfloat_clamped();
+
+typedef struct {
+  void (*func)(void);
+  char *name;
+  char *tag;
+} TaggedFunc;
+
+typedef struct {
+  TaggedFunc *funcs;
+  size_t len, cap;
+} TaggedFuncsArray;
+
+void ctest_tagged_funcs_run(char *tags);
+
+void ctest_tagged_func_create(void (*func)(void), char *name, char *tags);
 
 #ifdef CTEST_IMPL
 
 // =============== //
 // Implementation  //
 // =============== //
+
+static TaggedFuncsArray _tagged_funcs = {0};
+
+void ctest_tagged_func_create(void (*func)(void), char *name, char *tag) {
+  if (_tagged_funcs.len == _tagged_funcs.cap) {
+    _tagged_funcs.funcs = (TaggedFunc *)realloc(_tagged_funcs.funcs, sizeof(TaggedFunc) * _tagged_funcs.cap * 2);
+    _tagged_funcs.cap *= 2;
+  }
+  _tagged_funcs.funcs[_tagged_funcs.len].func = func;
+  _tagged_funcs.funcs[_tagged_funcs.len].name = name;
+  _tagged_funcs.funcs[_tagged_funcs.len].tag = tag;
+  _tagged_funcs.len++;
+}
+
+void ctest_tagged_funcs_run(char *tag) {
+  for (size_t i = 0; i < _tagged_funcs.len; i++) {
+    if (strcmp(_tagged_funcs.funcs[i].tag, tag) == 0) {
+      _tagged_funcs.funcs[i].func();
+    }
+  }
+}
 
 int ctest_randint(int min, int max) {
   return rand() % (max - min + 1) + min;
@@ -113,6 +152,9 @@ typedef struct {
 static CTest _result = {0};
 
 void _init_results() {
+  _tagged_funcs.funcs = (TaggedFunc *)malloc(sizeof(TaggedFunc) * 10);
+  _tagged_funcs.len = 0;
+  _tagged_funcs.cap = 10;
   _result.exprs = (char **)malloc(sizeof(char *) * 10);
   _result.len = 0;
   _result.cap = 10;
