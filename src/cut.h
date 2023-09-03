@@ -104,7 +104,6 @@ typedef struct {
 } TaggedFuncsArray;
 
 void cut_tagged_funcs_run(char *tags);
-
 void cut_tagged_func_create(void (*func)(void), char *name, char *tags);
 
 #ifdef CUT_IMPL

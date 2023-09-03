@@ -23,6 +23,10 @@ A small, C unit test library.
 
 `void cut_tagged_funcs_run(char *tag);` - runs all tagged functions with the given tag
 
+`int cut_randint(int min, int max);` - generates a random integer between min and max.
+
+`float cut_randfloat_clamped();` - generates a random float between 0 and 1.
+
 # Examples
 
 ## Passed Tests
