@@ -64,7 +64,7 @@ int main(void) {
 *Output*
 
 ```
-Summary
+CUT Summary
 ===================================
 main.c:main:18 -> CUT_ASSERT_TRUE(x == 1) ... ok
 main.c:main:19 -> CUT_ASSERT_FALSE(x == 2) ... ok
@@ -113,7 +113,7 @@ int main(void) {
 *Output*
 
 ```
-Summary
+CUT Summary
 ===================================
 main.c:main:18 -> CUT_ASSERT_TRUE(x != 1) ... FAILED
 main.c:main:19 -> CUT_ASSERT_FALSE(x == 2) ... ok
@@ -134,7 +134,7 @@ Total: 6
 *Output*
 
 ```
-Summary
+CUT Summary
 ===================================
 main.c:main:18 -> CUT_ASSERT_TRUE(x != 1) ... FAILED
 Passed: 0
@@ -185,7 +185,7 @@ int main(void) {
 ```
 Running test 1 [important]
 Running test 2 [important]
-Summary
+CUT Summary
 ===================================
 main.c:test1:9 -> CUT_ASSERT_TRUE(1 == 1) ... ok
 main.c:helper:5 -> CUT_ASSERT_TRUE(1 == 2) ... FAILED

@@ -19,7 +19,7 @@
 // Put this in the exit point of the file to be tested.
 #define CUT_END                                 \
   do {                                          \
-    printf("Summary\n");                        \
+    printf("CUT Summary\n");                    \
     _show_results();                            \
     _free_results();                            \
   } while (0)
