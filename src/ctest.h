@@ -19,7 +19,9 @@
 // Put this in the exit point of the file to be tested.
 #define CTEST_END                               \
   do {                                          \
+    printf("Summary\n");                        \
     _show_results();                            \
+    _free_results();                            \
   } while (0)
 
 #define _TO_STR(x) #x
@@ -111,6 +113,17 @@ void ctest_tagged_func_create(void (*func)(void), char *name, char *tags);
 // Implementation  //
 // =============== //
 
+typedef struct {
+  char **exprs;
+  size_t len, cap;
+  size_t failed;
+  size_t passed;
+  clock_t start_time, end_time;
+  double elapsed_time;
+} CTest;
+
+static CTest _result = {0};
+
 static TaggedFuncsArray _tagged_funcs = {0};
 
 void ctest_tagged_func_create(void (*func)(void), char *name, char *tag) {
@@ -124,10 +137,27 @@ void ctest_tagged_func_create(void (*func)(void), char *name, char *tag) {
   _tagged_funcs.len++;
 }
 
+void _show_results() {
+  _result.end_time = clock();
+  _result.elapsed_time = (double)(_result.end_time - _result.start_time) / CLOCKS_PER_SEC;
+  printf("===================================\n");
+  for (size_t i = 0; i < _result.len; i++) {
+    printf("%s\n", _result.exprs[i]);
+  }
+  printf("Passed: %zu\n", _result.passed);
+  printf("Failed: %zu\n", _result.failed);
+  printf("Total: %zu\n", _result.len);
+  printf("Time: %f\n", _result.elapsed_time);
+  printf("===================================\n");
+}
+
 void ctest_tagged_funcs_run(char *tag) {
   for (size_t i = 0; i < _tagged_funcs.len; i++) {
     if (strcmp(_tagged_funcs.funcs[i].tag, tag) == 0) {
+      printf("Running %s [%s]\n", _tagged_funcs.funcs[i].name, _tagged_funcs.funcs[i].tag);
       _tagged_funcs.funcs[i].func();
+      _show_results();
+      putchar('\n');
     }
   }
 }
@@ -139,17 +169,6 @@ int ctest_randint(int min, int max) {
 float ctest_randfloat_clamped() {
   return (float)rand() / (float)(RAND_MAX);
 }
-
-typedef struct {
-  char **exprs;
-  size_t len, cap;
-  size_t failed;
-  size_t passed;
-  clock_t start_time, end_time;
-  double elapsed_time;
-} CTest;
-
-static CTest _result = {0};
 
 void _init_results() {
   _tagged_funcs.funcs = (TaggedFunc *)malloc(sizeof(TaggedFunc) * 10);
@@ -173,22 +192,12 @@ void _realloc_exprs() {
   _result.start_time -= pause;
 }
 
-void _show_results() {
-  _result.end_time = clock();
-  _result.elapsed_time = (double)(_result.end_time - _result.start_time) / CLOCKS_PER_SEC;
-  printf("========== CTest Results ==========\n");
-  for (size_t i = 0; i < _result.len; i++) {
-    printf("%s\n", _result.exprs[i]);
-  }
-  printf("Passed: %zu\n", _result.passed);
-  printf("Failed: %zu\n", _result.failed);
-  printf("Total: %zu\n", _result.len);
-  printf("Time: %f\n", _result.elapsed_time);
-  printf("===================================\n");
-
+void _free_results() {
   for (size_t i = 0; i < _result.len; i++) {
     free(_result.exprs[i]);
   }
+  free(_result.exprs);
+  free(_tagged_funcs.funcs);
 }
 
 void _add_to_results(char *expr, int passed) {
