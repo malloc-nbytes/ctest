@@ -19,7 +19,6 @@
 // Put this in the exit point of the file to be tested.
 #define CUT_END                                 \
   do {                                          \
-    printf("CUT Summary\n");                    \
     _show_results();                            \
     _free_results();                            \
   } while (0)
@@ -28,87 +27,118 @@
 
 #define _PRE_EXPR __FILE__, __func__, __LINE__
 
+#define MAX_PRINT_LEN 256
+
 // =============== //
 //   Assertions    //
 // =============== //
 
 // Asserts that the expression is true.
-#define CUT_ASSERT_TRUE(expr)                                           \
+#define cut_assert_true(expr)                                           \
   do {                                                                  \
-    char *res = (char *)malloc(sizeof(char) * 100);                     \
+    char *res = (char *)malloc(sizeof(char) * MAX_PRINT_LEN);           \
     if ((expr)) {                                                       \
-      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CUT_ASSERT_TRUE(expr)), "ok"); \
+      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(cut_assert_true(expr)), "ok"); \
       _add_to_results(res, PASSED);                                     \
     } else {                                                            \
-      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CUT_ASSERT_TRUE(expr)), "FAILED"); \
+      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(cut_assert_true(expr)), "FAILED"); \
       _add_to_results(res, FAILED);                                     \
     }                                                                   \
   } while (0)
 
 // Asserts that the expression is true.
-#define CUT_ASSERT_NOT_NULL(expr)                                       \
+#define cut_assert_not_null(expr)                                       \
   do {                                                                  \
-    char *res = (char *)malloc(sizeof(char) * 100);                     \
+    char *res = (char *)malloc(sizeof(char) * MAX_PRINT_LEN);           \
     if ((expr) != NULL) {                                               \
-      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CUT_ASSERT_NOT_NULL(expr)), "ok"); \
+      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(cut_assert_not_null(expr)), "ok"); \
       _add_to_results(res, PASSED);                                     \
     } else {                                                            \
-      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CUT_ASSERT_NOT_NULL(expr)), "FAILED"); \
+      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(cut_assert_not_null(expr)), "FAILED"); \
       _add_to_results(res, FAILED);                                     \
     }                                                                   \
   } while (0)
 
 // Asserts that the expression is true.
-#define CUT_ASSERT_NULL(expr)                                       \
+#define cut_assert_null(expr)                                           \
   do {                                                                  \
-    char *res = (char *)malloc(sizeof(char) * 100);                     \
+    char *res = (char *)malloc(sizeof(char) * MAX_PRINT_LEN);           \
     if ((expr) == NULL) {                                               \
-      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CUT_ASSERT_NULL(expr)), "ok"); \
+      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(cut_assert_null(expr)), "ok"); \
       _add_to_results(res, PASSED);                                     \
     } else {                                                            \
-      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CUT_ASSERT_NULL(expr)), "FAILED"); \
+      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(cut_assert_null(expr)), "FAILED"); \
       _add_to_results(res, FAILED);                                     \
     }                                                                   \
   } while (0)
+
 // Asserts that the expression is false.
-#define CUT_ASSERT_FALSE(expr)                                          \
+#define cut_assert_false(expr)                                          \
   do {                                                                  \
-    char *res = (char *)malloc(sizeof(char) * 100);                     \
+    char *res = (char *)malloc(sizeof(char) * MAX_PRINT_LEN);           \
     if (!(expr)) {                                                      \
-      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CUT_ASSERT_FALSE(expr)), "ok"); \
+      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(cut_assert_false(expr)), "ok"); \
       _add_to_results(res, PASSED);                                     \
     } else {                                                            \
-      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CUT_ASSERT_FALSE(expr)), "FAILED"); \
+      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(cut_assert_false(expr)), "FAILED"); \
       _add_to_results(res, FAILED);                                     \
     }                                                                   \
   } while (0)
 
 // Asserts that the two expressions are equal.
 // Displays the values of the expressions if they are not equal.
-#define CUT_ASSERT_EQ(expr1, expr2)                                     \
+#define cut_assert_eq(expr1, expr2)                                     \
   do {                                                                  \
-    char *res = (char *)malloc(sizeof(char) * 100);                     \
+    char *res = (char *)malloc(sizeof(char) * MAX_PRINT_LEN);           \
     if ((expr1) == (expr2)) {                                           \
-      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CUT_ASSERT_EQ(expr1, expr2)), "ok"); \
+      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(cut_assert_eq(expr1, expr2)), "ok"); \
       _add_to_results(res, PASSED);                                     \
     } else {                                                            \
-      sprintf(res, "%s:%s:%d -> %s ... %s\n  lhs = %lld\n  rhs = %lld", _PRE_EXPR, _TO_STR(CUT_ASSERT_EQ(expr1, expr2)), "FAILED", (long long)expr1, (long long)expr2); \
+      sprintf(res, "%s:%s:%d -> %s ... %s\n  lhs = %lld\n  rhs = %lld", _PRE_EXPR, _TO_STR(cut_assert_eq(expr1, expr2)), "FAILED", (long long)expr1, (long long)expr2); \
       _add_to_results(res, FAILED);                                     \
     }                                                                   \
   } while (0)
 
 // Asserts that the two expressions are not equal.
 // Displays the values of the expressions if they are equal.
-#define CUT_ASSERT_NEQ(expr1, expr2)                                    \
+#define cut_assert_neq(expr1, expr2)                                    \
   do {                                                                  \
-    char *res = (char *)malloc(sizeof(char) * 100);                     \
+    char *res = (char *)malloc(sizeof(char) * MAX_PRINT_LEN);           \
     if ((expr1) != (expr2)) {                                           \
-      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(CUT_ASSERT_NEQ(expr1, expr2)), "ok"); \
+      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(cut_assert_neq(expr1, expr2)), "ok"); \
       _add_to_results(res, PASSED);                                     \
     } else {                                                            \
-      sprintf(res, "%s:%s:%d -> %s ... %s\n  lhs = %d\n  rhs = %d", _PRE_EXPR, _TO_STR(CUT_ASSERT_NEQ(expr1, expr2)), "FAILED", expr1, expr2); \
+      sprintf(res, "%s:%s:%d -> %s ... %s\n  lhs = %d\n  rhs = %d", _PRE_EXPR, _TO_STR(cut_assert_neq(expr1, expr2)), "FAILED", expr1, expr2); \
       _add_to_results(res, FAILED);                                     \
     }                                                                   \
+  } while (0)
+
+// Asserts that the two expressions are equal or if it equals
+// the `or` expression.
+// Displays the values of the expressions if they are not equal.
+#define cut_assert_eq_or(expr1, expr2, or)                              \
+  do {                                                                  \
+    char *res = (char *)malloc(sizeof(char) * MAX_PRINT_LEN);           \
+    if ((expr1) == (expr2) || (expr1) == (or)) {                        \
+      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(cut_assert_eq_or(expr1, expr2, or)), "ok"); \
+      _add_to_results(res, PASSED);                                     \
+    } else {                                                            \
+      sprintf(res, "%s:%s:%d -> %s ... %s\n  lhs = %lld\n  rhs = %lld\n  or = %lld\n", _PRE_EXPR, _TO_STR(cut_assert_eq(expr1, expr2)), "FAILED", (long long)expr1, (long long)expr2, (long long)or); \
+      _add_to_results(res, FAILED);                                     \
+    }                                                                   \
+  } while (0)
+
+// Will debug print an array.
+#define cut_debug_print_array(arr, len, format_specifier)       \
+  do {                                                          \
+    printf("  " #arr " = [");                                   \
+    for (size_t i = 0; i < len; i++) {                          \
+      printf(format_specifier, arr[i]);                         \
+      if (i != len - 1) {                                       \
+        printf(", ");                                           \
+      }                                                         \
+    }                                                           \
+    printf("]\n");                                              \
   } while (0)
 
 // Generates a random integer between min and max.
@@ -128,7 +158,7 @@ typedef struct {
   size_t len, cap;
 } TaggedFuncsArray;
 
-void cut_tagged_funcs_run(char *tags);
+void cut_tagged_func_run(char *tags);
 void cut_tagged_func_create(void (*func)(void), char *name, char *tags);
 
 #ifdef CUT_IMPL
@@ -164,6 +194,7 @@ void cut_tagged_func_create(void (*func)(void), char *name, char *tag) {
 void _show_results() {
   _result.end_time = clock();
   _result.elapsed_time = (double)(_result.end_time - _result.start_time) / CLOCKS_PER_SEC;
+  printf("CUT Summary\n");
   printf("===================================\n");
   for (size_t i = 0; i < _result.len; i++) {
     printf("%s\n", _result.exprs[i]);
@@ -175,21 +206,13 @@ void _show_results() {
   printf("===================================\n");
 }
 
-void cut_tagged_funcs_run(char *tag) {
+void cut_tagged_func_run(char *tag) {
   for (size_t i = 0; i < _tagged_funcs.len; i++) {
     if (strcmp(_tagged_funcs.funcs[i].tag, tag) == 0) {
       printf("Running %s [%s]\n", _tagged_funcs.funcs[i].name, _tagged_funcs.funcs[i].tag);
       _tagged_funcs.funcs[i].func();
     }
   }
-}
-
-int cut_randint(int min, int max) {
-  return rand() % (max - min + 1) + min;
-}
-
-float cut_randfloat_clamped() {
-  return (float)rand() / (float)(RAND_MAX);
 }
 
 void _init_results() {
