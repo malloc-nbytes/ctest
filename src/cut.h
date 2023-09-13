@@ -141,12 +141,6 @@
     printf("]\n");                                              \
   } while (0)
 
-// Generates a random integer between min and max.
-int cut_randint(int min, int max);
-
-// Generates a random float between 0 and 1.
-float cut_randfloat_clamped();
-
 typedef struct {
   void (*func)(void);
   char *name;
