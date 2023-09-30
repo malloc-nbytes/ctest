@@ -218,8 +218,8 @@ void _init_results() {
   _result.cap = 10;
   _result.failed = 0;
   _result.passed = 0;
-  _result.end_time;
-  _result.elapsed_time;
+  _result.end_time = 0;
+  _result.elapsed_time = 0;
   _result.start_time = clock();
   srand(time(NULL));
 }
