@@ -113,21 +113,6 @@
     }                                                                   \
   } while (0)
 
-// Asserts that the two expressions are equal or if it equals
-// the `or` expression.
-// Displays the values of the expressions if they are not equal.
-#define cut_assert_eq_or(expr1, expr2, or)                              \
-  do {                                                                  \
-    char *res = (char *)malloc(sizeof(char) * MAX_PRINT_LEN);           \
-    if ((expr1) == (expr2) || (expr1) == (or)) {                        \
-      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(cut_assert_eq_or(expr1, expr2, or)), "ok"); \
-      _add_to_results(res, PASSED);                                     \
-    } else {                                                            \
-      sprintf(res, "%s:%s:%d -> %s ... %s\n  lhs = %lld\n  rhs = %lld\n  or = %lld\n", _PRE_EXPR, _TO_STR(cut_assert_eq(expr1, expr2)), "FAILED", (long long)expr1, (long long)expr2, (long long)or); \
-      _add_to_results(res, FAILED);                                     \
-    }                                                                   \
-  } while (0)
-
 // Will debug print an array.
 #define cut_debug_print_array(arr, len, format_specifier)       \
   do {                                                          \
@@ -170,9 +155,9 @@ typedef struct {
   double elapsed_time;
 } Cut;
 
-static Cut _result = {0};
+static Cut _result;
 
-static TaggedFuncsArray _tagged_funcs = {0};
+static TaggedFuncsArray _tagged_funcs;
 
 void cut_tagged_func_create(void (*func)(void), char *name, char *tag) {
   if (_tagged_funcs.len == _tagged_funcs.cap) {
@@ -190,9 +175,11 @@ void _show_results() {
   _result.elapsed_time = (double)(_result.end_time - _result.start_time) / CLOCKS_PER_SEC;
   printf("CUT Summary\n");
   printf("===================================\n");
+#ifndef CUT_SUPPRESS_TESTS
   for (size_t i = 0; i < _result.len; i++) {
     printf("%s\n", _result.exprs[i]);
   }
+#endif
   printf("Passed: %zu\n", _result.passed);
   printf("Failed: %zu\n", _result.failed);
   printf("Total: %zu\n", _result.len);
