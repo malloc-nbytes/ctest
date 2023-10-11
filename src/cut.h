@@ -99,6 +99,19 @@
     }                                                                   \
   } while (0)
 
+#define cut_assert_eqstr(expr1, expr2)                                  \
+  do {                                                                  \
+    char *res = (char *)malloc(sizeof(char) * MAX_PRINT_LEN);           \
+    if (strcmp(expr1, expr2) == 0) {                                    \
+      sprintf(res, "%s:%s:%d -> %s ... %s", _PRE_EXPR, _TO_STR(cut_assert_eq(expr1, expr2)), "ok"); \
+      _add_to_results(res, PASSED);                                     \
+    } else {                                                            \
+      sprintf(res, "%s:%s:%d -> %s ... %s\n  lhs = %lld\n  rhs = %lld", _PRE_EXPR, _TO_STR(cut_assert_eq(expr1, expr2)), "FAILED", (long long)expr1, (long long)expr2); \
+      _add_to_results(res, FAILED);                                     \
+    }                                                                   \
+  } while (0)
+
+
 // Asserts that the two expressions are not equal.
 // Displays the values of the expressions if they are equal.
 #define cut_assert_neq(expr1, expr2)                                    \
