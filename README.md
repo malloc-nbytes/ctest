@@ -1,6 +1,6 @@
 # cut
 
-A small, C unit test library.
+A small, C Unit Test header-only library.
 
 # Usage
 1. put `#define CUT_IMPL` at the top of the file that is being tested in
